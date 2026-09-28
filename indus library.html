@@ -1,0 +1,5529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Indus Library Management System</title>
+
+<style>
+
+/* =========================================================
+                      GLOBAL
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f3f6fb;
+    color:#222;
+    min-height:100vh;
+}
+
+button{
+    cursor:pointer;
+    border:none;
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================================================
+                         LOGIN
+========================================================= */
+
+#loginPage{
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172554,
+            #2563eb,
+            #0f766e
+        );
+
+    padding:20px;
+}
+
+.login-box{
+    width:420px;
+    max-width:100%;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.25);
+}
+
+.logo{
+    width:75px;
+    height:75px;
+
+    background:#2563eb;
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:30px;
+    font-weight:bold;
+
+    margin:0 auto 15px;
+}
+
+.login-box h1{
+    text-align:center;
+    color:#172554;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+.login-buttons{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.login-buttons button{
+    flex:1;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    background:#e5e7eb;
+
+    font-weight:bold;
+}
+
+.login-buttons button.active{
+    background:#2563eb;
+    color:white;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+
+    margin-bottom:6px;
+
+    font-weight:bold;
+
+    font-size:14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    outline:none;
+
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color:#2563eb;
+
+}
+
+.login-btn{
+
+    width:100%;
+
+    padding:13px;
+
+    background:#2563eb;
+
+    color:white;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+}
+
+.demo{
+
+    margin-top:18px;
+
+    padding:12px;
+
+    background:white;
+
+    border-radius:8px;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+}
+
+/* =========================================================
+                         TOPBAR
+========================================================= */
+
+#app{
+    min-height:100vh;
+}
+
+.topbar{
+
+    height:70px;
+
+    background:#172554;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 25px;
+
+}
+
+.topbar-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.small-logo{
+
+    width:42px;
+    height:42px;
+
+    background:white;
+    color:#172554;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    font-weight:bold;
+
+}
+
+.topbar h2{
+    font-size:20px;
+}
+
+.user-area{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.role-badge{
+
+    background:#2563eb;
+
+    padding:7px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+}
+
+.logout{
+
+    background:#dc2626;
+
+    color:white;
+
+    padding:9px 14px;
+
+    border-radius:7px;
+
+}
+
+/* =========================================================
+                         LAYOUT
+========================================================= */
+
+.layout{
+
+    display:flex;
+
+    min-height:
+        calc(100vh - 70px);
+
+}
+
+/* =========================================================
+                         SIDEBAR
+========================================================= */
+
+.sidebar{
+
+    width:240px;
+
+    background:#111827;
+
+    color:white;
+
+    padding:20px 12px;
+
+}
+
+.nav-btn{
+
+    width:100%;
+
+    text-align:left;
+
+    padding:13px;
+
+    margin-bottom:6px;
+
+    border-radius:7px;
+
+    background:transparent;
+
+    color:#d1d5db;
+
+    font-size:15px;
+
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+/* =========================================================
+                         CONTENT
+========================================================= */
+
+.content{
+
+    flex:1;
+
+    padding:25px;
+
+    overflow:auto;
+
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-title{
+    margin-bottom:20px;
+}
+
+.page-title h1{
+
+    color:#172554;
+
+    margin-bottom:5px;
+
+}
+
+.page-title p{
+
+    color:#64748b;
+
+}
+
+/* =========================================================
+                         DASHBOARD
+========================================================= */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:18px;
+
+    margin-bottom:25px;
+
+}
+
+.stat-card{
+
+    background:white;
+
+    padding:22px;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(0,0,0,.08);
+
+}
+
+.stat-card h3{
+
+    font-size:14px;
+
+    color:#64748b;
+
+    margin-bottom:10px;
+
+}
+
+.stat-number{
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    color:#2563eb;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:22px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(0,0,0,.08);
+
+}
+
+.card h2{
+
+    margin-bottom:15px;
+
+    color:#172554;
+
+}
+
+.grid-2{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:20px;
+
+}
+
+/* =========================================================
+                         FORMS
+========================================================= */
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+.form-grid-3{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.primary{
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:11px 18px;
+
+    border-radius:7px;
+
+    font-weight:bold;
+
+}
+
+.success{
+
+    background:#16a34a;
+
+    color:white;
+
+    padding:8px 13px;
+
+    border-radius:6px;
+
+}
+
+.warning{
+
+    background:#f59e0b;
+
+    color:white;
+
+    padding:8px 13px;
+
+    border-radius:6px;
+
+}
+
+.danger{
+
+    background:#dc2626;
+
+    color:white;
+
+    padding:8px 13px;
+
+    border-radius:6px;
+
+}
+
+.secondary{
+
+    background:#64748b;
+
+    color:white;
+
+    padding:8px 13px;
+
+    border-radius:6px;
+
+}
+
+.edit-btn{
+
+    background:#7c3aed;
+
+    color:white;
+
+    padding:8px 13px;
+
+    border-radius:6px;
+
+}
+
+.edit-btn:hover{
+    background:#6d28d9;
+}
+
+.action-row{
+
+    display:flex;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+}
+
+/* =========================================================
+                         SEARCH
+========================================================= */
+
+.search-box{
+
+    width:100%;
+
+    padding:13px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    margin-bottom:15px;
+
+}
+
+/* =========================================================
+                         TABLE
+========================================================= */
+
+.table-wrapper{
+
+    overflow-x:auto;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th,
+td{
+
+    padding:12px 10px;
+
+    border-bottom:
+        1px solid #e5e7eb;
+
+    text-align:left;
+
+    white-space:nowrap;
+
+}
+
+th{
+
+    background:#f1f5f9;
+
+    color:#172554;
+
+    font-size:13px;
+
+}
+
+td{
+
+    font-size:14px;
+
+}
+
+/* =========================================================
+                         STATUS
+========================================================= */
+
+.status{
+
+    padding:5px 9px;
+
+    border-radius:15px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}
+
+.status.issued{
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+}
+
+.status.returned{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.status.available{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.status.unavailable{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+}
+
+/* =========================================================
+                       COPY BADGES
+========================================================= */
+
+.copy-badge{
+
+    display:inline-block;
+
+    padding:5px 9px;
+
+    border-radius:15px;
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    font-weight:bold;
+
+    font-size:12px;
+
+}
+
+.available-badge{
+
+    display:inline-block;
+
+    padding:5px 9px;
+
+    border-radius:15px;
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    font-weight:bold;
+
+    font-size:12px;
+
+}
+
+.issued-badge{
+
+    display:inline-block;
+
+    padding:5px 9px;
+
+    border-radius:15px;
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+    font-weight:bold;
+
+    font-size:12px;
+
+}
+
+/* =========================================================
+                       STUDENT CARD
+========================================================= */
+
+.student-list{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+
+}
+
+.student-card{
+
+    background:white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius:10px;
+
+    padding:18px;
+
+}
+
+.student-card h3{
+
+    color:#172554;
+
+    margin-bottom:8px;
+
+}
+
+.student-card p{
+
+    font-size:14px;
+
+    color:#64748b;
+
+    margin:5px 0;
+
+}
+
+.student-id{
+
+    display:inline-block;
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    padding:4px 8px;
+
+    border-radius:5px;
+
+    font-size:12px;
+
+    margin-bottom:10px;
+
+}
+
+/* =========================================================
+                       BOOK SELECTION
+========================================================= */
+
+.book-selection{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+    margin-top:10px;
+
+}
+
+.book-option{
+
+    border:
+        1px solid #d1d5db;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.book-option:hover{
+
+    background:#f8fafc;
+
+}
+
+/* =========================================================
+                         MODAL
+========================================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(0,0,0,.6);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+    padding:20px;
+
+}
+
+.modal.show{
+
+    display:flex;
+
+}
+
+.modal-box{
+
+    background:white;
+
+    width:800px;
+
+    max-width:100%;
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    border-radius:15px;
+
+    padding:25px;
+
+}
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.close{
+
+    background:#e5e7eb;
+
+    width:35px;
+
+    height:35px;
+
+    border-radius:50%;
+
+    font-size:20px;
+
+}
+
+/* =========================================================
+                         TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    bottom:25px;
+
+    right:25px;
+
+    background:#172554;
+
+    color:white;
+
+    padding:14px 20px;
+
+    border-radius:8px;
+
+    display:none;
+
+    z-index:2000;
+
+}
+
+.toast.show{
+    display:block;
+}
+
+/* =========================================================
+                         DARK MODE
+========================================================= */
+
+body.dark{
+
+    background:#0f172a;
+
+    color:#e5e7eb;
+
+}
+
+body.dark .card,
+body.dark .stat-card,
+body.dark .student-card,
+body.dark .modal-box,
+body.dark .book-option{
+
+    background:#1e293b;
+
+    color:#e5e7eb;
+
+}
+
+body.dark .page-title h1,
+body.dark .card h2,
+body.dark .student-card h3{
+
+    color:#bfdbfe;
+
+}
+
+body.dark th{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+body.dark td{
+
+    border-color:#334155;
+
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea{
+
+    background:#0f172a;
+
+    color:white;
+
+    border-color:#475569;
+
+}
+
+/* =========================================================
+                       RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px){
+
+    .stats{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .student-list{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:750px){
+
+    .sidebar{
+
+        width:190px;
+
+    }
+
+    .grid-2,
+    .form-grid,
+    .form-grid-3{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .student-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .book-selection{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .layout{
+
+        flex-direction:column;
+
+    }
+
+    .sidebar{
+
+        width:100%;
+
+        display:flex;
+
+        overflow-x:auto;
+
+        padding:8px;
+
+    }
+
+    .nav-btn{
+
+        min-width:150px;
+
+        margin-right:5px;
+
+    }
+
+    .content{
+
+        padding:15px;
+
+    }
+
+    .stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .topbar{
+
+        padding:0 12px;
+
+    }
+
+    .topbar h2{
+
+        font-size:15px;
+
+    }
+
+    .role-badge{
+
+        display:none;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+                         LOGIN PAGE
+========================================================= -->
+
+<div id="loginPage">
+
+    <div class="login-box">
+
+        <div class="logo">
+            IL
+        </div>
+
+        <h1>
+            Indus Library
+        </h1>
+
+        <p class="subtitle">
+            Library Management System
+        </p>
+
+
+        <div class="login-buttons">
+
+            <button
+                id="librarianTab"
+                class="active"
+                onclick="selectLoginRole('librarian')">
+
+                Librarian
+
+            </button>
+
+            <button
+                id="hmTab"
+                onclick="selectLoginRole('hm')">
+
+                HM
+
+            </button>
+
+        </div>
+
+
+        <form onsubmit="login(event)">
+
+            <div class="form-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    id="loginUsername"
+                    type="text"
+                    required
+                    placeholder="Enter username">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    required
+                    placeholder="Enter password">
+
+            </div>
+
+
+            <button class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="demo">
+
+            <b>Demo Login</b><br>
+
+            Librarian:
+            <b>librarian</b> /
+            <b>lib123</b>
+
+            <br>
+
+            HM:
+            <b>hm</b> /
+            <b>hm123</b>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+                         APPLICATION
+========================================================= -->
+
+<div id="app" class="hidden">
+
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <div class="small-logo">
+            IL
+        </div>
+
+        <h2>
+            Indus Library Management
+        </h2>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <span
+            id="roleBadge"
+            class="role-badge">
+
+            Librarian
+
+        </span>
+
+        <button
+            class="logout"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+
+<!-- =========================================================
+                         SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+    <button
+        class="nav-btn active"
+        onclick="showPage('dashboard',this)">
+
+        📊 Dashboard
+
+    </button>
+
+
+    <button
+        id="studentNav"
+        class="nav-btn"
+        onclick="showPage('students',this)">
+
+        👨‍🎓 Student Enrollment
+
+    </button>
+
+
+    <button
+        id="issueNav"
+        class="nav-btn"
+        onclick="showPage('issue',this)">
+
+        📚 Issue Books
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('records',this)">
+
+        📋 Book Records
+
+    </button>
+
+
+    <button
+        id="booksNav"
+        class="nav-btn"
+        onclick="showPage('books',this)">
+
+        📖 Manage Books
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('reports',this)">
+
+        📈 Reports
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="toggleDarkMode()">
+
+        🌙 Dark Mode
+
+    </button>
+
+</aside>
+
+
+<!-- =========================================================
+                         MAIN CONTENT
+========================================================= -->
+
+<main class="content">
+
+
+<!-- =========================================================
+                         DASHBOARD
+========================================================= -->
+
+<section
+    id="dashboard"
+    class="page active">
+
+    <div class="page-title">
+
+        <h1>
+            Dashboard
+        </h1>
+
+        <p>
+            Library overview and statistics
+        </p>
+
+    </div>
+
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Students
+            </h3>
+
+            <div
+                id="totalStudents"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Book Titles
+            </h3>
+
+            <div
+                id="totalBooks"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Total Copies
+            </h3>
+
+            <div
+                id="totalCopies"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Available Copies
+            </h3>
+
+            <div
+                id="availableCopies"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <h3>
+                Books Issued
+            </h3>
+
+            <div
+                id="issuedBooks"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Books Returned
+            </h3>
+
+            <div
+                id="returnedBooks"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="grid-2">
+
+
+        <div class="card">
+
+            <h2>
+                Recent Transactions
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Book
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody
+                        id="recentRecords">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Library Information
+            </h2>
+
+            <p>
+                The librarian can enroll students,
+                manage books, issue books, record
+                returns and maintain library records.
+            </p>
+
+            <br>
+
+            <p>
+                HM access is view-only.
+                The HM can see students and
+                book transactions entered by
+                the librarian.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+                     STUDENT ENROLLMENT
+========================================================= -->
+
+<section
+    id="students"
+    class="page">
+
+    <div class="page-title">
+
+        <h1>
+            Student Enrollment
+        </h1>
+
+        <p>
+            Enroll students so the librarian can
+            search and issue books.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Enroll New Student
+        </h2>
+
+
+        <form onsubmit="addStudent(event)">
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student ID / Admission Number *
+                    </label>
+
+                    <input
+                        id="studentId"
+                        required
+                        placeholder="Example: STU001">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student Name *
+                    </label>
+
+                    <input
+                        id="studentName"
+                        required
+                        placeholder="Enter student name">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Class *
+                    </label>
+
+                    <select
+                        id="studentClass"
+                        required>
+
+                        <option value="">
+                            Select Class
+                        </option>
+
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Section *
+                    </label>
+
+                    <select
+                        id="studentSection"
+                        required>
+
+                        <option value="">
+                            Select Section
+                        </option>
+
+                        <option>A</option>
+                        <option>B</option>
+                        <option>C</option>
+                        <option>D</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Hostel Number
+                    </label>
+
+                    <input
+                        id="hostelNumber"
+                        placeholder="Example: H-25">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Date of Enrollment
+                    </label>
+
+                    <input
+                        id="enrollmentDate"
+                        type="date">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Parent / Guardian Name
+                    </label>
+
+                    <input
+                        id="guardianName"
+                        placeholder="Guardian name">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Contact Number
+                    </label>
+
+                    <input
+                        id="contactNumber"
+                        type="tel"
+                        placeholder="Phone number">
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+            <button class="primary">
+
+                ➕ Enroll Student
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Search Enrolled Students
+        </h2>
+
+        <input
+            class="search-box"
+            id="studentSearch"
+            oninput="renderStudents()"
+            placeholder="Search by name, Student ID, class, section or hostel number...">
+
+
+        <div
+            id="studentList"
+            class="student-list">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+                         ISSUE BOOKS
+========================================================= -->
+
+<section
+    id="issue"
+    class="page">
+
+    <div class="page-title">
+
+        <h1>
+            Issue Books
+        </h1>
+
+        <p>
+            Issue one or multiple books to an enrolled student.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            1. Search and Select Student
+        </h2>
+
+        <input
+            class="search-box"
+            id="issueStudentSearch"
+            oninput="renderIssueStudents()"
+            placeholder="Search student by name or ID...">
+
+
+        <div
+            id="issueStudentList"
+            class="student-list">
+
+        </div>
+
+
+        <input
+            type="hidden"
+            id="selectedStudentId">
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            2. Select Books
+        </h2>
+
+        <div
+            id="bookSelection"
+            class="book-selection">
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            3. Issue Details
+        </h2>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Date Taken *
+                </label>
+
+                <input
+                    id="dateTaken"
+                    type="date"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Due / Submission Date *
+                </label>
+
+                <input
+                    id="dueDate"
+                    type="date"
+                    required>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+        <button
+            class="primary"
+            onclick="issueSelectedBooks()">
+
+            📚 Issue Selected Books
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+                       BOOK RECORDS
+========================================================= -->
+
+<section
+    id="records"
+    class="page">
+
+    <div class="page-title">
+
+        <h1>
+            Book Records
+        </h1>
+
+        <p>
+            View all issued and returned book transactions.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <input
+            class="search-box"
+            id="recordSearch"
+            oninput="renderRecords()"
+            placeholder="Search by student, book, class, hostel number...">
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Student ID
+                        </th>
+
+                        <th>
+                            Student Name
+                        </th>
+
+                        <th>
+                            Class
+                        </th>
+
+                        <th>
+                            Hostel No.
+                        </th>
+
+                        <th>
+                            Book
+                        </th>
+
+                        <th>
+                            Date Taken
+                        </th>
+
+                        <th>
+                            Due Date
+                        </th>
+
+                        <th>
+                            Submitted Date
+                        </th>
+
+                        <th>
+                            Submitted By
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="recordsTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+                       MANAGE BOOKS
+========================================================= -->
+
+<section
+    id="books"
+    class="page">
+
+    <div class="page-title">
+
+        <h1>
+            Manage Books
+        </h1>
+
+        <p>
+            Add, edit and manage library books and copies.
+        </p>
+
+    </div>
+
+
+    <!-- ADD BOOK -->
+
+    <div class="card">
+
+        <h2>
+            Add New Book
+        </h2>
+
+
+        <form onsubmit="addBook(event)">
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Book ID *
+                    </label>
+
+                    <input
+                        id="bookId"
+                        required
+                        placeholder="Example: BK001">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Book Name *
+                    </label>
+
+                    <input
+                        id="bookName"
+                        required
+                        placeholder="Example: Mathematics">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Author
+                    </label>
+
+                    <input
+                        id="bookAuthor"
+                        placeholder="Author name">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <input
+                        id="bookCategory"
+                        placeholder="Science / Maths / English">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        No. of Copies *
+                    </label>
+
+                    <input
+                        id="bookCopies"
+                        type="number"
+                        min="1"
+                        value="1"
+                        required
+                        placeholder="Example: 10">
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+            <button class="primary">
+
+                ➕ Add Book
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- BOOK LIST -->
+
+    <div class="card">
+
+        <h2>
+            Books List
+        </h2>
+
+
+        <input
+            class="search-box"
+            id="bookSearch"
+            oninput="renderBooks()"
+            placeholder="Search books by ID, name, author or category...">
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Book ID
+                        </th>
+
+                        <th>
+                            Book Name
+                        </th>
+
+                        <th>
+                            Author
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Total Copies
+                        </th>
+
+                        <th>
+                            Available
+                        </th>
+
+                        <th>
+                            Issued
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="booksTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+                         REPORTS
+========================================================= -->
+
+<section
+    id="reports"
+    class="page">
+
+    <div class="page-title">
+
+        <h1>
+            Reports
+        </h1>
+
+        <p>
+            Library transaction reports.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Report Summary
+        </h2>
+
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Students Enrolled
+                </h3>
+
+                <div
+                    id="reportStudents"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Book Titles
+                </h3>
+
+                <div
+                    id="reportBooks"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Total Copies
+                </h3>
+
+                <div
+                    id="reportCopies"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Available Copies
+                </h3>
+
+                <div
+                    id="reportAvailable"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="primary"
+            onclick="exportCSV()">
+
+            ⬇ Export Records CSV
+
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            System Information
+        </h2>
+
+
+        <p>
+            <b>Student Enrollment:</b>
+            Only the librarian can enroll students.
+        </p>
+
+        <br>
+
+        <p>
+            <b>Book Management:</b>
+            Librarian can add books, specify the
+            number of copies and edit existing books.
+        </p>
+
+        <br>
+
+        <p>
+            <b>Book Issue:</b>
+            A book can be issued only when at least
+            one copy is available.
+        </p>
+
+        <br>
+
+        <p>
+            <b>HM Access:</b>
+            HM can view library records but cannot
+            add students, add books, issue books
+            or return books.
+        </p>
+
+    </div>
+
+</section>
+
+
+</main>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+                       STUDENT MODAL
+========================================================= -->
+
+<div
+    id="studentModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>
+                Student Profile
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeStudentModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div id="studentProfile">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+                           TOAST
+========================================================= -->
+
+<div
+    id="toast"
+    class="toast">
+
+</div>
+
+
+<script>
+
+/* =========================================================
+                         DATABASE
+========================================================= */
+
+let students =
+    JSON.parse(
+        localStorage.getItem(
+            "indus_students"
+        )
+    ) || [];
+
+
+let books =
+    JSON.parse(
+        localStorage.getItem(
+            "indus_books"
+        )
+    ) || [];
+
+
+let records =
+    JSON.parse(
+        localStorage.getItem(
+            "indus_records"
+        )
+    ) || [];
+
+
+let currentRole = "";
+
+let loginRole = "librarian";
+
+
+/* =========================================================
+                       DEFAULT BOOKS
+========================================================= */
+
+if(books.length === 0){
+
+    books = [
+
+        {
+            id:"BK001",
+            name:"Mathematics",
+            author:"NCERT",
+            category:"Mathematics",
+            copies:10
+        },
+
+        {
+            id:"BK002",
+            name:"Science",
+            author:"NCERT",
+            category:"Science",
+            copies:10
+        },
+
+        {
+            id:"BK003",
+            name:"English",
+            author:"NCERT",
+            category:"English",
+            copies:10
+        },
+
+        {
+            id:"BK004",
+            name:"Social Studies",
+            author:"NCERT",
+            category:"Social",
+            copies:10
+        },
+
+        {
+            id:"BK005",
+            name:"Hindi",
+            author:"NCERT",
+            category:"Language",
+            copies:10
+        },
+
+        {
+            id:"BK006",
+            name:"Telugu",
+            author:"NCERT",
+            category:"Language",
+            copies:10
+        }
+
+    ];
+
+}
+
+
+/* =========================================================
+                UPGRADE OLD BOOK DATA
+========================================================= */
+
+books.forEach(book => {
+
+    if(
+        typeof book.copies !== "number" ||
+        book.copies < 1
+    ){
+
+        book.copies = 1;
+
+    }
+
+});
+
+
+saveData();
+
+
+/* =========================================================
+                     LOGIN ROLE
+========================================================= */
+
+function selectLoginRole(role){
+
+    loginRole = role;
+
+
+    document
+        .getElementById("librarianTab")
+        .classList.toggle(
+            "active",
+            role === "librarian"
+        );
+
+
+    document
+        .getElementById("hmTab")
+        .classList.toggle(
+            "active",
+            role === "hm"
+        );
+
+}
+
+
+/* =========================================================
+                         LOGIN
+========================================================= */
+
+function login(event){
+
+    event.preventDefault();
+
+
+    const username =
+        document
+        .getElementById("loginUsername")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+
+    if(
+        loginRole === "librarian" &&
+        username === "librarian" &&
+        password === "lib123"
+    ){
+
+        currentRole = "Librarian";
+
+        openApplication();
+
+    }
+
+    else if(
+        loginRole === "hm" &&
+        username === "hm" &&
+        password === "hm123"
+    ){
+
+        currentRole = "HM";
+
+        openApplication();
+
+    }
+
+    else{
+
+        alert(
+            "Invalid username or password."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+                  OPEN APPLICATION
+========================================================= */
+
+function openApplication(){
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("app")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("roleBadge")
+        .textContent =
+        currentRole;
+
+
+    configureAccess();
+
+    refreshAll();
+
+}
+
+
+/* =========================================================
+                    ACCESS CONTROL
+========================================================= */
+
+function configureAccess(){
+
+    const librarian =
+        currentRole === "Librarian";
+
+
+    document
+        .getElementById("studentNav")
+        .classList.toggle(
+            "hidden",
+            !librarian
+        );
+
+
+    document
+        .getElementById("issueNav")
+        .classList.toggle(
+            "hidden",
+            !librarian
+        );
+
+
+    document
+        .getElementById("booksNav")
+        .classList.toggle(
+            "hidden",
+            !librarian
+        );
+
+}
+
+
+/* =========================================================
+                         LOGOUT
+========================================================= */
+
+function logout(){
+
+    currentRole = "";
+
+
+    document
+        .getElementById("app")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("loginUsername")
+        .value = "";
+
+
+    document
+        .getElementById("loginPassword")
+        .value = "";
+
+}
+
+
+/* =========================================================
+                       NAVIGATION
+========================================================= */
+
+function showPage(pageId,button){
+
+    if(
+        currentRole === "HM" &&
+        [
+            "students",
+            "issue",
+            "books"
+        ].includes(pageId)
+    ){
+
+        return;
+
+    }
+
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+
+            page.classList.remove("active");
+
+        });
+
+
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    if(button){
+
+        button.classList.add("active");
+
+    }
+
+
+    refreshAll();
+
+}
+
+
+/* =========================================================
+                       SAVE DATA
+========================================================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "indus_students",
+        JSON.stringify(students)
+    );
+
+
+    localStorage.setItem(
+        "indus_books",
+        JSON.stringify(books)
+    );
+
+
+    localStorage.setItem(
+        "indus_records",
+        JSON.stringify(records)
+    );
+
+}
+
+
+/* =========================================================
+                      ADD STUDENT
+========================================================= */
+
+function addStudent(event){
+
+    event.preventDefault();
+
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const id =
+        document
+        .getElementById("studentId")
+        .value
+        .trim();
+
+
+    const name =
+        document
+        .getElementById("studentName")
+        .value
+        .trim();
+
+
+    const studentClass =
+        document
+        .getElementById("studentClass")
+        .value;
+
+
+    const section =
+        document
+        .getElementById("studentSection")
+        .value;
+
+
+    const hostel =
+        document
+        .getElementById("hostelNumber")
+        .value
+        .trim();
+
+
+    const enrollmentDate =
+        document
+        .getElementById("enrollmentDate")
+        .value;
+
+
+    const guardian =
+        document
+        .getElementById("guardianName")
+        .value
+        .trim();
+
+
+    const contact =
+        document
+        .getElementById("contactNumber")
+        .value
+        .trim();
+
+
+    if(
+        students.some(
+            student =>
+                student.id.toLowerCase() ===
+                id.toLowerCase()
+        )
+    ){
+
+        alert(
+            "Student ID already exists."
+        );
+
+        return;
+
+    }
+
+
+    students.push({
+
+        id:id,
+
+        name:name,
+
+        className:studentClass,
+
+        section:section,
+
+        hostel:hostel,
+
+        enrollmentDate:
+            enrollmentDate ||
+            getToday(),
+
+        guardian:guardian,
+
+        contact:contact
+
+    });
+
+
+    saveData();
+
+
+    event.target.reset();
+
+
+    document
+        .getElementById("enrollmentDate")
+        .value =
+        getToday();
+
+
+    showToast(
+        "Student enrolled successfully."
+    );
+
+
+    renderStudents();
+
+    updateDashboard();
+
+}
+
+
+/* =========================================================
+                    RENDER STUDENTS
+========================================================= */
+
+function renderStudents(){
+
+    const container =
+        document
+        .getElementById("studentList");
+
+
+    if(!container){
+        return;
+    }
+
+
+    const search =
+        (
+            document
+            .getElementById("studentSearch")
+            ?.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const filtered =
+        students.filter(student => {
+
+            return (
+
+                student.id
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                student.name
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                student.className
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                student.section
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                (student.hostel || "")
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+        });
+
+
+    if(filtered.length === 0){
+
+        container.innerHTML = `
+
+            <div class="card full">
+
+                <p>
+                    No enrolled students found.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+
+        filtered.map(student => `
+
+            <div class="student-card">
+
+                <span class="student-id">
+
+                    ${escapeHTML(student.id)}
+
+                </span>
+
+
+                <h3>
+
+                    ${escapeHTML(student.name)}
+
+                </h3>
+
+
+                <p>
+
+                    <b>Class:</b>
+
+                    ${escapeHTML(student.className)}
+                    -
+                    ${escapeHTML(student.section)}
+
+                </p>
+
+
+                <p>
+
+                    <b>Hostel:</b>
+
+                    ${escapeHTML(
+                        student.hostel || "N/A"
+                    )}
+
+                </p>
+
+
+                <p>
+
+                    <b>Enrolled:</b>
+
+                    ${escapeHTML(
+                        student.enrollmentDate
+                    )}
+
+                </p>
+
+
+                <br>
+
+
+                <div class="action-row">
+
+
+                    <button
+                        class="primary"
+                        onclick="viewStudent('${escapeHTML(student.id)}')">
+
+                        View Profile
+
+                    </button>
+
+
+                    <button
+                        class="danger"
+                        onclick="deleteStudent('${escapeHTML(student.id)}')">
+
+                        Delete
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================================================
+                      VIEW STUDENT
+========================================================= */
+
+function viewStudent(id){
+
+    const student =
+        students.find(
+            s => s.id === id
+        );
+
+
+    if(!student){
+        return;
+    }
+
+
+    const history =
+        records.filter(
+            record =>
+                record.studentId === id
+        );
+
+
+    let historyHTML = "";
+
+
+    if(history.length === 0){
+
+        historyHTML = `
+            <p>
+                No book history available.
+            </p>
+        `;
+
+    }
+
+    else{
+
+        historyHTML = `
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Book</th>
+
+                            <th>Taken</th>
+
+                            <th>Due</th>
+
+                            <th>Submitted</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        ${
+
+                            history.map(
+                                record => `
+
+                                <tr>
+
+                                    <td>
+                                        ${escapeHTML(record.bookName)}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(record.dateTaken)}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(record.dueDate)}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(
+                                            record.submittedDate ||
+                                            "-"
+                                        )}
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            class="status ${
+                                                record.status === "Issued"
+                                                ? "issued"
+                                                : "returned"
+                                            }">
+
+                                            ${escapeHTML(
+                                                record.status
+                                            )}
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            `).join("")
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById("studentProfile")
+        .innerHTML = `
+
+
+        <div class="card">
+
+            <h2>
+                ${escapeHTML(student.name)}
+            </h2>
+
+
+            <p>
+                <b>Student ID:</b>
+                ${escapeHTML(student.id)}
+            </p>
+
+
+            <p>
+                <b>Class:</b>
+                ${escapeHTML(student.className)}
+                -
+                ${escapeHTML(student.section)}
+            </p>
+
+
+            <p>
+                <b>Hostel Number:</b>
+                ${escapeHTML(
+                    student.hostel || "N/A"
+                )}
+            </p>
+
+
+            <p>
+                <b>Enrollment Date:</b>
+                ${escapeHTML(
+                    student.enrollmentDate
+                )}
+            </p>
+
+
+            <p>
+                <b>Guardian:</b>
+                ${escapeHTML(
+                    student.guardian || "N/A"
+                )}
+            </p>
+
+
+            <p>
+                <b>Contact:</b>
+                ${escapeHTML(
+                    student.contact || "N/A"
+                )}
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Book History
+            </h2>
+
+            ${historyHTML}
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById("studentModal")
+        .classList.add("show");
+
+}
+
+
+/* =========================================================
+                  CLOSE STUDENT MODAL
+========================================================= */
+
+function closeStudentModal(){
+
+    document
+        .getElementById("studentModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================================
+                    DELETE STUDENT
+========================================================= */
+
+function deleteStudent(id){
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const hasIssued =
+        records.some(
+            record =>
+                record.studentId === id &&
+                record.status === "Issued"
+        );
+
+
+    if(hasIssued){
+
+        alert(
+            "This student has books currently issued. " +
+            "Return the books before deleting the student."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Delete this enrolled student?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    students =
+        students.filter(
+            student =>
+                student.id !== id
+        );
+
+
+    saveData();
+
+
+    renderStudents();
+
+    updateDashboard();
+
+
+    showToast(
+        "Student deleted."
+    );
+
+}
+
+
+/* =========================================================
+                ISSUE STUDENT SEARCH
+========================================================= */
+
+function renderIssueStudents(){
+
+    const container =
+        document
+        .getElementById(
+            "issueStudentList"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    const search =
+        (
+            document
+            .getElementById(
+                "issueStudentSearch"
+            )
+            ?.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const filtered =
+        students.filter(student =>
+
+            student.id
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            student.name
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+
+    if(filtered.length === 0){
+
+        container.innerHTML = `
+
+            <div class="card">
+
+                <p>
+                    No enrolled students found.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+
+        filtered.map(student => `
+
+            <div class="student-card">
+
+                <span class="student-id">
+
+                    ${escapeHTML(student.id)}
+
+                </span>
+
+
+                <h3>
+
+                    ${escapeHTML(student.name)}
+
+                </h3>
+
+
+                <p>
+
+                    Class:
+                    ${escapeHTML(student.className)}
+                    -
+                    ${escapeHTML(student.section)}
+
+                </p>
+
+
+                <p>
+
+                    Hostel:
+                    ${escapeHTML(
+                        student.hostel || "N/A"
+                    )}
+
+                </p>
+
+
+                <br>
+
+
+                <button
+                    class="primary"
+                    onclick="selectIssueStudent('${escapeHTML(student.id)}')">
+
+                    Select Student
+
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================================================
+                SELECT ISSUE STUDENT
+========================================================= */
+
+function selectIssueStudent(id){
+
+    const student =
+        students.find(
+            s => s.id === id
+        );
+
+
+    if(!student){
+        return;
+    }
+
+
+    document
+        .getElementById(
+            "selectedStudentId"
+        )
+        .value = id;
+
+
+    document
+        .querySelectorAll(
+            "#issueStudentList .student-card"
+        )
+        .forEach(card => {
+
+            card.style.border =
+                "";
+
+        });
+
+
+    const search =
+        (
+            document
+            .getElementById(
+                "issueStudentSearch"
+            )
+            .value || ""
+        )
+        .toLowerCase();
+
+
+    const filtered =
+        students.filter(student =>
+
+            student.id
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            student.name
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+
+    const index =
+        filtered.findIndex(
+            s => s.id === id
+        );
+
+
+    const cards =
+        document
+        .querySelectorAll(
+            "#issueStudentList .student-card"
+        );
+
+
+    if(cards[index]){
+
+        cards[index].style.border =
+            "3px solid #2563eb";
+
+    }
+
+
+    showToast(
+        "Selected: " +
+        student.name
+    );
+
+}
+
+
+/* =========================================================
+                    BOOK SELECTION
+========================================================= */
+
+function renderBookSelection(){
+
+    const container =
+        document
+        .getElementById(
+            "bookSelection"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    const availableBooks =
+        books.filter(book => {
+
+            const issuedCount =
+                records.filter(
+                    record =>
+                        record.bookId === book.id &&
+                        record.status === "Issued"
+                ).length;
+
+
+            const totalCopies =
+                Number(book.copies || 1);
+
+
+            return (
+                issuedCount <
+                totalCopies
+            );
+
+        });
+
+
+    if(availableBooks.length === 0){
+
+        container.innerHTML = `
+
+            <p>
+                No books are currently available.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+
+        availableBooks.map(book => {
+
+            const issuedCount =
+                records.filter(
+                    record =>
+                        record.bookId === book.id &&
+                        record.status === "Issued"
+                ).length;
+
+
+            const totalCopies =
+                Number(book.copies || 1);
+
+
+            const available =
+                totalCopies -
+                issuedCount;
+
+
+            return `
+
+                <label class="book-option">
+
+                    <input
+                        type="checkbox"
+                        value="${escapeHTML(book.id)}">
+
+
+                    <span>
+
+                        <b>
+                            ${escapeHTML(book.name)}
+                        </b>
+
+                        <br>
+
+                        <small>
+
+                            ID:
+                            ${escapeHTML(book.id)}
+
+                            |
+
+                            Author:
+                            ${escapeHTML(
+                                book.author ||
+                                "Unknown"
+                            )}
+
+                            |
+
+                            Available:
+                            ${available}
+
+                        </small>
+
+                    </span>
+
+                </label>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================================
+                    ISSUE BOOKS
+========================================================= */
+
+function issueSelectedBooks(){
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const studentId =
+        document
+        .getElementById(
+            "selectedStudentId"
+        )
+        .value;
+
+
+    if(!studentId){
+
+        alert(
+            "Please search and select an enrolled student."
+        );
+
+        return;
+
+    }
+
+
+    const student =
+        students.find(
+            s => s.id === studentId
+        );
+
+
+    const selectedBooks =
+        Array.from(
+            document.querySelectorAll(
+                "#bookSelection input:checked"
+            )
+        )
+        .map(
+            checkbox =>
+                checkbox.value
+        );
+
+
+    if(selectedBooks.length === 0){
+
+        alert(
+            "Please select at least one book."
+        );
+
+        return;
+
+    }
+
+
+    const dateTaken =
+        document
+        .getElementById(
+            "dateTaken"
+        )
+        .value;
+
+
+    const dueDate =
+        document
+        .getElementById(
+            "dueDate"
+        )
+        .value;
+
+
+    if(!dateTaken || !dueDate){
+
+        alert(
+            "Please enter Date Taken and Due Date."
+        );
+
+        return;
+
+    }
+
+
+    if(dueDate < dateTaken){
+
+        alert(
+            "Due Date cannot be before Date Taken."
+        );
+
+        return;
+
+    }
+
+
+    /* CHECK AVAILABILITY */
+
+    for(
+        const bookId
+        of selectedBooks
+    ){
+
+        const book =
+            books.find(
+                b => b.id === bookId
+            );
+
+
+        if(!book){
+            continue;
+        }
+
+
+        const issuedCount =
+            records.filter(
+                record =>
+                    record.bookId === bookId &&
+                    record.status === "Issued"
+            ).length;
+
+
+        const totalCopies =
+            Number(book.copies || 1);
+
+
+        if(
+            issuedCount >=
+            totalCopies
+        ){
+
+            alert(
+                "No available copy for: " +
+                book.name
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* CREATE RECORDS */
+
+    selectedBooks.forEach(bookId => {
+
+        const book =
+            books.find(
+                b => b.id === bookId
+            );
+
+
+        if(!book){
+            return;
+        }
+
+
+        records.push({
+
+            id:
+                Date.now() +
+                Math.random(),
+
+
+            studentId:
+                student.id,
+
+
+            studentName:
+                student.name,
+
+
+            className:
+                student.className,
+
+
+            section:
+                student.section,
+
+
+            hostel:
+                student.hostel,
+
+
+            bookId:
+                book.id,
+
+
+            bookName:
+                book.name,
+
+
+            dateTaken:
+                dateTaken,
+
+
+            dueDate:
+                dueDate,
+
+
+            submittedDate:
+                "",
+
+
+            submittedBy:
+                "Librarian",
+
+
+            status:
+                "Issued"
+
+        });
+
+    });
+
+
+    saveData();
+
+
+    document
+        .querySelectorAll(
+            "#bookSelection input:checked"
+        )
+        .forEach(
+            checkbox =>
+                checkbox.checked = false
+        );
+
+
+    document
+        .getElementById(
+            "selectedStudentId"
+        )
+        .value = "";
+
+
+    showToast(
+        selectedBooks.length +
+        " book(s) issued successfully."
+    );
+
+
+    renderBookSelection();
+
+    renderRecords();
+
+    updateDashboard();
+
+}
+
+
+/* =========================================================
+                       ADD BOOK
+========================================================= */
+
+function addBook(event){
+
+    event.preventDefault();
+
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const id =
+        document
+        .getElementById("bookId")
+        .value
+        .trim();
+
+
+    const name =
+        document
+        .getElementById("bookName")
+        .value
+        .trim();
+
+
+    const author =
+        document
+        .getElementById("bookAuthor")
+        .value
+        .trim();
+
+
+    const category =
+        document
+        .getElementById("bookCategory")
+        .value
+        .trim();
+
+
+    const copies =
+        parseInt(
+            document
+            .getElementById("bookCopies")
+            .value
+        );
+
+
+    if(
+        copies < 1 ||
+        isNaN(copies)
+    ){
+
+        alert(
+            "Number of copies must be at least 1."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        books.some(
+            book =>
+                book.id.toLowerCase() ===
+                id.toLowerCase()
+        )
+    ){
+
+        alert(
+            "Book ID already exists."
+        );
+
+        return;
+
+    }
+
+
+    books.push({
+
+        id:id,
+
+        name:name,
+
+        author:author,
+
+        category:category,
+
+        copies:copies
+
+    });
+
+
+    saveData();
+
+
+    event.target.reset();
+
+
+    document
+        .getElementById(
+            "bookCopies"
+        )
+        .value = 1;
+
+
+    renderBooks();
+
+    renderBookSelection();
+
+    updateDashboard();
+
+
+    showToast(
+        "Book added successfully with " +
+        copies +
+        " copies."
+    );
+
+}
+
+
+/* =========================================================
+                       RENDER BOOKS
+========================================================= */
+
+function renderBooks(){
+
+    const table =
+        document
+        .getElementById(
+            "booksTable"
+        );
+
+
+    if(!table){
+        return;
+    }
+
+
+    const search =
+        (
+            document
+            .getElementById(
+                "bookSearch"
+            )
+            ?.value || ""
+        )
+        .toLowerCase();
+
+
+    const filtered =
+        books.filter(book =>
+
+            book.id
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            book.name
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (book.author || "")
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (book.category || "")
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+
+    if(filtered.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="9">
+
+                    No books found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+
+        filtered.map(book => {
+
+            const totalCopies =
+                Number(
+                    book.copies || 1
+                );
+
+
+            const issuedCount =
+                records.filter(
+                    record =>
+                        record.bookId === book.id &&
+                        record.status === "Issued"
+                ).length;
+
+
+            const availableCopies =
+                Math.max(
+                    0,
+                    totalCopies -
+                    issuedCount
+                );
+
+
+            let statusText;
+
+            let statusClass;
+
+
+            if(
+                availableCopies === 0
+            ){
+
+                statusText =
+                    "All Issued";
+
+                statusClass =
+                    "issued";
+
+            }
+            else{
+
+                statusText =
+                    "Available";
+
+                statusClass =
+                    "returned";
+
+            }
+
+
+            return `
+
+                <tr>
+
+
+                    <td>
+
+                        ${escapeHTML(book.id)}
+
+                    </td>
+
+
+                    <td>
+
+                        <b>
+                            ${escapeHTML(book.name)}
+                        </b>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            book.author || "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            book.category || "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="copy-badge">
+
+                            ${totalCopies}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="available-badge">
+
+                            ${availableCopies}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="issued-badge">
+
+                            ${issuedCount}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}">
+
+                            ${statusText}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div
+                            class="action-row">
+
+
+                            <button
+                                class="edit-btn"
+                                onclick="editBook('${escapeHTML(book.id)}')">
+
+                                ✏ Edit
+
+                            </button>
+
+
+                            <button
+                                class="danger"
+                                onclick="deleteBook('${escapeHTML(book.id)}')">
+
+                                🗑 Delete
+
+                            </button>
+
+
+                        </div>
+
+                    </td>
+
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================================
+                       EDIT BOOK
+========================================================= */
+
+function editBook(id){
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const book =
+        books.find(
+            b => b.id === id
+        );
+
+
+    if(!book){
+        return;
+    }
+
+
+    const issuedCount =
+        records.filter(
+            record =>
+                record.bookId === id &&
+                record.status === "Issued"
+        ).length;
+
+
+    const currentCopies =
+        Number(
+            book.copies || 1
+        );
+
+
+    const newName =
+        prompt(
+            "Enter Book Name:",
+            book.name
+        );
+
+
+    if(newName === null){
+        return;
+    }
+
+
+    if(!newName.trim()){
+
+        alert(
+            "Book name cannot be empty."
+        );
+
+        return;
+
+    }
+
+
+    const newAuthor =
+        prompt(
+            "Enter Author:",
+            book.author || ""
+        );
+
+
+    if(newAuthor === null){
+        return;
+    }
+
+
+    const newCategory =
+        prompt(
+            "Enter Category:",
+            book.category || ""
+        );
+
+
+    if(newCategory === null){
+        return;
+    }
+
+
+    const newCopiesInput =
+        prompt(
+
+            "Enter Total Number of Copies:\n\n" +
+
+            "Currently Issued: " +
+            issuedCount +
+
+            "\nMinimum allowed: " +
+            issuedCount,
+
+            currentCopies
+
+        );
+
+
+    if(newCopiesInput === null){
+        return;
+    }
+
+
+    const newCopies =
+        parseInt(
+            newCopiesInput
+        );
+
+
+    if(
+        isNaN(newCopies) ||
+        newCopies < 1
+    ){
+
+        alert(
+            "Number of copies must be at least 1."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        newCopies <
+        issuedCount
+    ){
+
+        alert(
+
+            "You cannot set total copies to " +
+            newCopies +
+
+            ".\n\n" +
+
+            issuedCount +
+            " copies are currently issued."
+
+        );
+
+        return;
+
+    }
+
+
+    book.name =
+        newName.trim();
+
+
+    book.author =
+        newAuthor.trim();
+
+
+    book.category =
+        newCategory.trim();
+
+
+    book.copies =
+        newCopies;
+
+
+    saveData();
+
+
+    renderBooks();
+
+    renderBookSelection();
+
+    updateDashboard();
+
+
+    showToast(
+        "Book details updated successfully."
+    );
+
+}
+
+
+/* =========================================================
+                       DELETE BOOK
+========================================================= */
+
+function deleteBook(id){
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const currentlyIssued =
+        records.some(
+            record =>
+                record.bookId === id &&
+                record.status === "Issued"
+        );
+
+
+    if(currentlyIssued){
+
+        alert(
+
+            "This book is currently issued " +
+            "and cannot be deleted."
+
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Delete this book?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    books =
+        books.filter(
+            book =>
+                book.id !== id
+        );
+
+
+    saveData();
+
+
+    renderBooks();
+
+    renderBookSelection();
+
+    updateDashboard();
+
+
+    showToast(
+        "Book deleted."
+    );
+
+}
+
+
+/* =========================================================
+                    RENDER RECORDS
+========================================================= */
+
+function renderRecords(){
+
+    const table =
+        document
+        .getElementById(
+            "recordsTable"
+        );
+
+
+    if(!table){
+        return;
+    }
+
+
+    const search =
+        (
+            document
+            .getElementById(
+                "recordSearch"
+            )
+            ?.value || ""
+        )
+        .toLowerCase();
+
+
+    const filtered =
+        records.filter(record =>
+
+            (record.studentId || "")
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (record.studentName || "")
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (record.bookName || "")
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (record.className || "")
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (record.hostel || "")
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+
+    if(filtered.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="11">
+
+                    No records found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+
+        filtered.map(record => `
+
+            <tr>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.studentId
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.studentName
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.className
+                    )}
+
+                    -
+
+                    ${escapeHTML(
+                        record.section
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.hostel || "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.bookName
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.dateTaken
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.dueDate
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.submittedDate ||
+                        "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.submittedBy
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="status ${
+                            record.status === "Issued"
+                            ? "issued"
+                            : "returned"
+                        }">
+
+                        ${escapeHTML(
+                            record.status
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+
+                    ${
+                        currentRole === "Librarian" &&
+                        record.status === "Issued"
+
+                        ?
+
+                        `
+
+                        <button
+                            class="success"
+                            onclick="returnBook('${record.id}')">
+
+                            ↩ Return
+
+                        </button>
+
+                        `
+
+                        :
+
+                        "-"
+
+                    }
+
+
+                </td>
+
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================================================
+                       RETURN BOOK
+========================================================= */
+
+function returnBook(id){
+
+    if(currentRole !== "Librarian"){
+        return;
+    }
+
+
+    const record =
+        records.find(
+            r =>
+                String(r.id) ===
+                String(id)
+        );
+
+
+    if(!record){
+        return;
+    }
+
+
+    const date =
+        prompt(
+
+            "Enter Submitted / Return Date:",
+
+            getToday()
+
+        );
+
+
+    if(!date){
+        return;
+    }
+
+
+    if(
+        date <
+        record.dateTaken
+    ){
+
+        alert(
+            "Return date cannot be before the taken date."
+        );
+
+        return;
+
+    }
+
+
+    record.submittedDate =
+        date;
+
+
+    record.submittedBy =
+        "Librarian";
+
+
+    record.status =
+        "Returned";
+
+
+    saveData();
+
+
+    renderRecords();
+
+    renderBookSelection();
+
+    renderBooks();
+
+    updateDashboard();
+
+
+    showToast(
+        "Book returned successfully."
+    );
+
+}
+
+
+/* =========================================================
+                    DASHBOARD UPDATE
+========================================================= */
+
+function updateDashboard(){
+
+    const issued =
+        records.filter(
+            r =>
+                r.status === "Issued"
+        ).length;
+
+
+    const returned =
+        records.filter(
+            r =>
+                r.status === "Returned"
+        ).length;
+
+
+    const totalCopies =
+        books.reduce(
+            (sum,book) =>
+                sum +
+                Number(
+                    book.copies || 1
+                ),
+            0
+        );
+
+
+    const availableCopies =
+        books.reduce(
+            (sum,book) => {
+
+                const issuedCount =
+                    records.filter(
+                        record =>
+                            record.bookId ===
+                            book.id &&
+                            record.status ===
+                            "Issued"
+                    ).length;
+
+
+                return sum +
+                    Math.max(
+                        0,
+                        Number(
+                            book.copies || 1
+                        ) -
+                        issuedCount
+                    );
+
+            },
+            0
+        );
+
+
+    document
+        .getElementById(
+            "totalStudents"
+        )
+        .textContent =
+        students.length;
+
+
+    document
+        .getElementById(
+            "totalBooks"
+        )
+        .textContent =
+        books.length;
+
+
+    document
+        .getElementById(
+            "totalCopies"
+        )
+        .textContent =
+        totalCopies;
+
+
+    document
+        .getElementById(
+            "availableCopies"
+        )
+        .textContent =
+        availableCopies;
+
+
+    document
+        .getElementById(
+            "issuedBooks"
+        )
+        .textContent =
+        issued;
+
+
+    document
+        .getElementById(
+            "returnedBooks"
+        )
+        .textContent =
+        returned;
+
+
+    document
+        .getElementById(
+            "reportStudents"
+        )
+        .textContent =
+        students.length;
+
+
+    document
+        .getElementById(
+            "reportBooks"
+        )
+        .textContent =
+        books.length;
+
+
+    document
+        .getElementById(
+            "reportCopies"
+        )
+        .textContent =
+        totalCopies;
+
+
+    document
+        .getElementById(
+            "reportAvailable"
+        )
+        .textContent =
+        availableCopies;
+
+
+    renderRecentRecords();
+
+}
+
+
+/* =========================================================
+                  RECENT RECORDS
+========================================================= */
+
+function renderRecentRecords(){
+
+    const container =
+        document
+        .getElementById(
+            "recentRecords"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    const recent =
+        [...records]
+        .reverse()
+        .slice(0,8);
+
+
+    if(recent.length === 0){
+
+        container.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+
+                    No transactions yet.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+
+        recent.map(record => `
+
+            <tr>
+
+                <td>
+
+                    ${escapeHTML(
+                        record.studentName
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        record.bookName
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="status ${
+                            record.status === "Issued"
+                            ? "issued"
+                            : "returned"
+                        }">
+
+                        ${escapeHTML(
+                            record.status
+                        )}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================================================
+                       EXPORT CSV
+========================================================= */
+
+function exportCSV(){
+
+    if(records.length === 0){
+
+        alert(
+            "No records available to export."
+        );
+
+        return;
+
+    }
+
+
+    const headers = [
+
+        "Student ID",
+
+        "Student Name",
+
+        "Class",
+
+        "Section",
+
+        "Hostel Number",
+
+        "Book ID",
+
+        "Book Name",
+
+        "Date Taken",
+
+        "Due Date",
+
+        "Submitted Date",
+
+        "Submitted By",
+
+        "Status"
+
+    ];
+
+
+    const rows =
+        records.map(record => [
+
+            record.studentId,
+
+            record.studentName,
+
+            record.className,
+
+            record.section,
+
+            record.hostel,
+
+            record.bookId,
+
+            record.bookName,
+
+            record.dateTaken,
+
+            record.dueDate,
+
+            record.submittedDate,
+
+            record.submittedBy,
+
+            record.status
+
+        ]);
+
+
+    const csv = [
+
+        headers,
+
+        ...rows
+
+    ]
+
+    .map(row =>
+
+        row.map(value =>
+
+            `"${String(
+                value || ""
+            )
+            .replace(
+                /"/g,
+                '""'
+            )}"`
+
+        ).join(",")
+
+    )
+
+    .join("\n");
+
+
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        "indus-library-records.csv";
+
+
+    document
+        .body
+        .appendChild(link);
+
+
+    link.click();
+
+
+    document
+        .body
+        .removeChild(link);
+
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+                      DARK MODE
+========================================================= */
+
+function toggleDarkMode(){
+
+    document
+        .body
+        .classList
+        .toggle("dark");
+
+
+    localStorage.setItem(
+
+        "indus_dark_mode",
+
+        document
+        .body
+        .classList
+        .contains("dark")
+
+    );
+
+}
+
+
+/* =========================================================
+                     TOAST MESSAGE
+========================================================= */
+
+function showToast(message){
+
+    const toast =
+        document
+        .getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        2500
+    );
+
+}
+
+
+/* =========================================================
+                    SECURITY DISPLAY
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+                        TODAY
+========================================================= */
+
+function getToday(){
+
+    return new Date()
+        .toISOString()
+        .split("T")[0];
+
+}
+
+
+/* =========================================================
+                      REFRESH ALL
+========================================================= */
+
+function refreshAll(){
+
+    renderStudents();
+
+    renderIssueStudents();
+
+    renderBookSelection();
+
+    renderBooks();
+
+    renderRecords();
+
+    updateDashboard();
+
+}
+
+
+/* =========================================================
+                    INITIAL SETTINGS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const today =
+            getToday();
+
+
+        document
+            .getElementById(
+                "enrollmentDate"
+            )
+            .value =
+            today;
+
+
+        document
+            .getElementById(
+                "dateTaken"
+            )
+            .value =
+            today;
+
+
+        document
+            .getElementById(
+                "dueDate"
+            )
+            .value =
+            today;
+
+
+        if(
+            localStorage.getItem(
+                "indus_dark_mode"
+            ) === "true"
+        ){
+
+            document
+                .body
+                .classList
+                .add("dark");
+
+        }
+
+
+        refreshAll();
+
+    }
+);
+
+
+/* =========================================================
+                 CLOSE MODAL BACKDROP
+========================================================= */
+
+document
+    .getElementById(
+        "studentModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                closeStudentModal();
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
